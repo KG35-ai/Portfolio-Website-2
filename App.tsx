@@ -1,30 +1,61 @@
 
 import React, { useEffect, useState, useRef } from 'react';
-import { Github, Linkedin, Mail, ExternalLink, ChevronDown, Code, Palette, Cpu, Bot, Phone, Sparkles, ShieldCheck, BarChart3, Globe, Award, CheckCircle2, Download, FileText, Check } from 'lucide-react';
+import { Github, Linkedin, Mail, ExternalLink, ChevronDown, Code, Palette, Cpu, Bot, Phone, Sparkles, ShieldCheck, BarChart3, Globe, Award, CheckCircle2, Download, FileText, Check, Play, Plus, Tv, Layers, Cloud, Server, Database, Terminal, Activity } from 'lucide-react';
 import Scene from './components/Scene';
 import ChatBot from './components/ChatBot';
+import EmbeddedAppModal from './components/EmbeddedAppModal';
+import AddAppModal, { ProjectApp } from './components/AddAppModal';
 
-const PROJECTS = [
+const DEFAULT_PROJECTS: ProjectApp[] = [
   {
+    id: "1",
     title: "Agentic AI Task Orchestrator",
     description: "Intelligent autonomous multi-agent task routing system utilizing Gemini 3 Flash for automated workflow orchestration and real-time execution.",
     tech: ["Gemini 3 Flash", "Python", "Agentic AI", "Cloud Functions"],
     image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=800",
-    link: "https://github.com/KG35-ai"
+    link: "https://github.com/KG35-ai",
+    embedUrl: "https://ais-dev-z2mi2hvqcs6kmhnzqaqnwj-47576549360.europe-west1.run.app",
+    isAiStudio: true
   },
   {
+    id: "2",
+    title: "Diketo — AI Cultural Heritage Game Agent",
+    description: "AI-powered cultural preservation agent teaching Diketo (traditional South African game) built with Google Gemini API & Firebase.",
+    tech: ["Google Gemini API", "Firebase", "Cloud Run", "AI Studio"],
+    image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=800",
+    link: "https://github.com/KG35-ai",
+    embedUrl: "https://ais-pre-z2mi2hvqcs6kmhnzqaqnwj-47576549360.europe-west1.run.app",
+    isAiStudio: true
+  },
+  {
+    id: "3",
+    title: "ACE CLI — Agentic Terminal Tool",
+    description: "Multi-turn agentic task orchestration terminal tool powered by Anthropic SDK with streaming chat and tool execution.",
+    tech: ["Python", "Anthropic Claude API", "Click", "Agentic AI"],
+    image: "https://images.unsplash.com/photo-1629654297299-c8506221ca97?auto=format&fit=crop&q=80&w=800",
+    link: "https://github.com/KG35-ai",
+    embedUrl: "https://ais-dev-z2mi2hvqcs6kmhnzqaqnwj-47576549360.europe-west1.run.app",
+    isAiStudio: true
+  },
+  {
+    id: "4",
     title: "Cloud & Developer Workflow Automation",
     description: "Scalable cloud-native deployment pipeline and API integration hub designed to streamline developer operations and modern CI/CD processes.",
     tech: ["GCP", "AWS", "TypeScript", "React"],
     image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=800",
-    link: "https://github.com/KG35-ai"
+    link: "https://github.com/KG35-ai",
+    embedUrl: "https://ais-dev-z2mi2hvqcs6kmhnzqaqnwj-47576549360.europe-west1.run.app",
+    isAiStudio: true
   },
   {
+    id: "5",
     title: "Interactive 3D Data Spatializer",
     description: "Immersive 3D visualization platform for mapping multidimensional datasets and complex agent workflows in real-time.",
     tech: ["Three.js", "React", "TypeScript", "WebGL"],
     image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80&w=800",
-    link: "https://github.com/KG35-ai"
+    link: "https://github.com/KG35-ai",
+    embedUrl: "https://ais-dev-z2mi2hvqcs6kmhnzqaqnwj-47576549360.europe-west1.run.app",
+    isAiStudio: true
   }
 ];
 
@@ -132,6 +163,33 @@ function App() {
   const [scrolled, setScrolled] = useState(false);
   const [downloadNotification, setDownloadNotification] = useState(false);
 
+  const [projectsList, setProjectsList] = useState<ProjectApp[]>(() => {
+    const saved = localStorage.getItem('kgotso_portfolio_projects');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    return DEFAULT_PROJECTS;
+  });
+
+  const [selectedAppForEmbed, setSelectedAppForEmbed] = useState<{
+    title: string;
+    url: string;
+    description?: string;
+    tech?: string[];
+  } | null>(null);
+
+  const [isAddAppModalOpen, setIsAddAppModalOpen] = useState(false);
+
+  const handleAddNewProject = (newProj: ProjectApp) => {
+    const updated = [newProj, ...projectsList];
+    setProjectsList(updated);
+    localStorage.setItem('kgotso_portfolio_projects', JSON.stringify(updated));
+  };
+
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
@@ -143,8 +201,8 @@ function App() {
   const email = "phirikg22@gmail.com";
   const phone = "065 968 1959";
   
-  // Professional portrait profile image
-  const profileImageUrl = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800&h=800";
+  // User profile photo
+  const profileImageUrl = "/profile.jpg";
 
   const handleDownloadResume = () => {
     setDownloadNotification(true);
@@ -326,71 +384,166 @@ function App() {
       </nav>
 
       <main className="relative z-10">
-        <section className="min-h-screen flex flex-col justify-center px-6 container mx-auto">
+        <section className="min-h-screen flex flex-col justify-center px-6 container mx-auto pt-28 pb-16">
           <div className="max-w-5xl space-y-8">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 rounded-full text-indigo-400 text-xs font-bold tracking-widest uppercase backdrop-blur-md">
-              <Sparkles size={12} />
-              Next-Gen Agentic AI & Web Solutions
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 bg-sky-500/10 border border-sky-400/25 rounded-full text-sky-300 text-xs font-bold tracking-widest uppercase backdrop-blur-md">
+              <Cloud size={14} className="text-sky-400 animate-pulse" />
+              <span>Google Cloud & Cloud Engineering · GCP ACE Jam</span>
             </div>
             <h1 className="text-6xl md:text-8xl font-black tracking-tight leading-[0.9] mix-blend-difference">
-              AI-Powered <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
-                Agentic & Cloud Systems.
+              Cloud Engineering & <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-br from-sky-400 via-indigo-400 to-cyan-300">
+                Scalable Systems.
               </span>
             </h1>
-            <p className="text-xl md:text-2xl text-zinc-400 max-w-3xl leading-relaxed mix-blend-difference font-light">
-              Junior PM and Full Stack Developer specialized in building intelligent agentic systems, scalable cloud architectures, and immersive interactive web interfaces.
+            <p className="text-xl md:text-2xl text-zinc-300 max-w-3xl leading-relaxed mix-blend-difference font-light">
+              GCP ACE Jam attendee and Cloud Solutions Developer specializing in architecting resilient microservices, Google Cloud Run deployments, containerized pipelines, and high-availability cloud-native architectures.
             </p>
-            <div className="flex flex-wrap gap-6 pt-6">
-              <a href="#work" className="px-10 py-5 bg-white text-black rounded-full font-black text-xs uppercase tracking-widest hover:bg-zinc-200 transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.2)]">
-                View Solutions
+            <div className="flex flex-wrap gap-4 pt-2">
+              <a href="#work" className="px-8 py-4 bg-white text-black rounded-full font-black text-xs uppercase tracking-widest hover:bg-zinc-200 transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                View Cloud Solutions
               </a>
-              <button onClick={handleDownloadResume} className="flex items-center gap-3 px-10 py-5 bg-indigo-600/20 backdrop-blur-xl border border-indigo-500/30 text-indigo-300 rounded-full font-black text-xs uppercase tracking-widest hover:bg-indigo-600 hover:text-white transition-all hover:scale-105 active:scale-95 shadow-lg shadow-indigo-500/10">
-                <Download size={16} /> Download Resume
+              <button onClick={handleDownloadResume} className="flex items-center gap-2.5 px-8 py-4 bg-indigo-600/20 backdrop-blur-xl border border-indigo-500/30 text-indigo-300 rounded-full font-black text-xs uppercase tracking-widest hover:bg-indigo-600 hover:text-white transition-all hover:scale-105 active:scale-95 shadow-lg shadow-indigo-500/10">
+                <Download size={15} /> Download Resume
               </button>
-              <a href={githubUrl} target="_blank" rel="noreferrer" className="flex items-center gap-3 px-10 py-5 bg-zinc-900/50 backdrop-blur-xl border border-white/10 rounded-full font-black text-xs uppercase tracking-widest hover:bg-zinc-800 transition-all hover:border-white/20">
-                <Github size={16} /> GitHub
+              <a href={githubUrl} target="_blank" rel="noreferrer" className="flex items-center gap-2.5 px-8 py-4 bg-zinc-900/60 backdrop-blur-xl border border-white/10 rounded-full font-black text-xs uppercase tracking-widest hover:bg-zinc-800 transition-all hover:border-white/20">
+                <Github size={15} /> GitHub Repos
               </a>
+            </div>
+
+            {/* Cloud Architecture Pillars / Highlights strip */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-white/10">
+              <div className="p-4 rounded-2xl bg-zinc-900/40 backdrop-blur-md border border-white/5 hover:border-sky-500/30 transition-all group">
+                <div className="flex items-center gap-2 text-sky-400 mb-1.5">
+                  <Cloud size={16} />
+                  <span className="text-[10px] font-black tracking-widest uppercase text-zinc-400">Platform</span>
+                </div>
+                <div className="text-sm font-bold text-white group-hover:text-sky-300 transition-colors">Google Cloud (GCP)</div>
+                <div className="text-[11px] text-zinc-400 mt-0.5">Cloud Run · Vertex AI · IAM</div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-zinc-900/40 backdrop-blur-md border border-white/5 hover:border-indigo-500/30 transition-all group">
+                <div className="flex items-center gap-2 text-indigo-400 mb-1.5">
+                  <Server size={16} />
+                  <span className="text-[10px] font-black tracking-widest uppercase text-zinc-400">Containers</span>
+                </div>
+                <div className="text-sm font-bold text-white group-hover:text-indigo-300 transition-colors">Microservices</div>
+                <div className="text-[11px] text-zinc-400 mt-0.5">Docker · Cloud Functions · APIs</div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-zinc-900/40 backdrop-blur-md border border-white/5 hover:border-emerald-500/30 transition-all group">
+                <div className="flex items-center gap-2 text-emerald-400 mb-1.5">
+                  <Database size={16} />
+                  <span className="text-[10px] font-black tracking-widest uppercase text-zinc-400">Data Tier</span>
+                </div>
+                <div className="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors">Cloud Data & NoSQL</div>
+                <div className="text-[11px] text-zinc-400 mt-0.5">Firestore · Atlas · Vector Search</div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-zinc-900/40 backdrop-blur-md border border-white/5 hover:border-purple-500/30 transition-all group">
+                <div className="flex items-center gap-2 text-purple-400 mb-1.5">
+                  <Activity size={16} />
+                  <span className="text-[10px] font-black tracking-widest uppercase text-zinc-400">Reliability</span>
+                </div>
+                <div className="text-sm font-bold text-white group-hover:text-purple-300 transition-colors">Scalable & Secure</div>
+                <div className="text-[11px] text-zinc-400 mt-0.5">Zero-Trust IAM · Cloud Build</div>
+              </div>
             </div>
           </div>
           
-          <div className="absolute bottom-12 left-1/2 -translate-x-1/2 animate-bounce text-zinc-500 opacity-50">
-            <ChevronDown size={32} />
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce text-zinc-500 opacity-50">
+            <ChevronDown size={28} />
           </div>
         </section>
 
         <section id="work" className="py-40 bg-zinc-950/40 backdrop-blur-sm border-y border-white/5">
           <div className="container mx-auto px-6">
-            <div className="flex justify-between items-end mb-20">
-              <div className="space-y-4">
-                <span className="text-indigo-500 text-xs font-black tracking-[0.3em] uppercase">The Portfolio</span>
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
+              <div className="space-y-4 max-w-2xl">
+                <span className="px-3 py-1 bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 rounded-full text-[10px] font-black tracking-[0.2em] uppercase inline-flex items-center gap-2">
+                  <Sparkles size={12} /> AI Studio Embedded Showcase
+                </span>
                 <h2 className="text-5xl font-black tracking-tighter">Strategic Implementations</h2>
+                <p className="text-zinc-400 text-sm font-medium leading-relaxed">
+                  Interactive applications built on Google AI Studio & Cloud Run, ready to test and preview directly inside live embedded sandboxes.
+                </p>
               </div>
-              <p className="hidden md:block text-zinc-500 text-sm max-w-[240px] text-right font-medium">Enterprise-ready solutions leveraging the latest in Gemini AI, Cloud Architecture, and Web technologies.</p>
+              <button
+                onClick={() => setIsAddAppModalOpen(true)}
+                className="flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-full font-black text-xs uppercase tracking-wider transition-all hover:scale-105 active:scale-95 shadow-lg shadow-indigo-600/25 shrink-0"
+              >
+                <Plus size={16} /> Integrate AI Studio App
+              </button>
             </div>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-              {PROJECTS.map((project, idx) => (
-                <FadeInView key={idx} delay={idx * 150}>
-                  <div className="group relative bg-zinc-900/40 backdrop-blur-md border border-white/5 rounded-3xl overflow-hidden hover:border-white/10 transition-all duration-500 shadow-2xl">
-                    <div className="aspect-[4/3] overflow-hidden">
+              {projectsList.map((project, idx) => (
+                <FadeInView key={project.id || idx} delay={idx * 120}>
+                  <div className="group relative bg-zinc-900/40 backdrop-blur-md border border-white/10 rounded-3xl overflow-hidden hover:border-indigo-500/40 transition-all duration-500 shadow-2xl flex flex-col h-full">
+                    <div className="aspect-[4/3] overflow-hidden relative group/img">
                       <img 
                         src={project.image} 
                         alt={project.title} 
-                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale group-hover:grayscale-0" 
+                        className="w-full h-full object-cover transition-transform duration-1000 group-hover/img:scale-110" 
                       />
+                      <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent opacity-80 group-hover/img:opacity-60 transition-opacity" />
+                      
+                      {project.isAiStudio && (
+                        <div className="absolute top-4 left-4 px-3 py-1 bg-indigo-600/90 backdrop-blur-md text-white rounded-full text-[9px] font-black uppercase tracking-widest flex items-center gap-1.5 shadow-lg">
+                          <Sparkles size={11} /> AI Studio App
+                        </div>
+                      )}
+
+                      {/* Hover overlay launch trigger */}
+                      <button
+                        onClick={() => setSelectedAppForEmbed({
+                          title: project.title,
+                          url: project.embedUrl || project.link,
+                          description: project.description,
+                          tech: project.tech
+                        })}
+                        className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity cursor-pointer group/btn"
+                      >
+                        <div className="px-5 py-2.5 bg-indigo-600 group-hover/btn:bg-indigo-500 text-white rounded-full font-black text-xs uppercase tracking-wider flex items-center gap-2 shadow-2xl group-hover/btn:scale-110 transition-all">
+                          <Play size={14} className="fill-white" /> Launch Live App
+                        </div>
+                      </button>
                     </div>
-                    <div className="p-8">
-                      <h3 className="text-2xl font-black mb-3 group-hover:text-indigo-400 transition-colors">{project.title}</h3>
-                      <p className="text-zinc-400 mb-8 leading-relaxed text-sm font-medium h-16 overflow-hidden">{project.description}</p>
-                      <div className="flex flex-wrap gap-2 mb-8">
-                        {project.tech.map((t, i) => (
-                          <span key={i} className="px-4 py-1.5 bg-zinc-800/50 rounded-full text-[9px] uppercase tracking-widest text-zinc-300 font-black border border-white/5">{t}</span>
-                        ))}
+
+                    <div className="p-8 flex flex-col flex-1 justify-between">
+                      <div>
+                        <h3 className="text-2xl font-black mb-3 group-hover:text-indigo-400 transition-colors">{project.title}</h3>
+                        <p className="text-zinc-400 mb-6 leading-relaxed text-sm font-medium line-clamp-3">{project.description}</p>
+                        <div className="flex flex-wrap gap-2 mb-8">
+                          {project.tech.map((t, i) => (
+                            <span key={i} className="px-3 py-1 bg-zinc-800/80 rounded-full text-[9px] uppercase tracking-widest text-zinc-300 font-black border border-white/5">{t}</span>
+                          ))}
+                        </div>
                       </div>
-                      <a href={project.link} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] hover:text-indigo-400 transition-all group/link">
-                        Technical Specs <ExternalLink size={12} className="group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform" />
-                      </a>
+
+                      <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                        <button
+                          onClick={() => setSelectedAppForEmbed({
+                            title: project.title,
+                            url: project.embedUrl || project.link,
+                            description: project.description,
+                            tech: project.tech
+                          })}
+                          className="flex items-center gap-2 text-[11px] font-black uppercase tracking-wider text-indigo-400 hover:text-indigo-300 transition-colors group/launch"
+                        >
+                          <Play size={12} className="fill-indigo-400 group-hover/launch:scale-125 transition-transform" />
+                          <span>Launch Embed</span>
+                        </button>
+
+                        <a 
+                          href={project.link} 
+                          target="_blank" 
+                          rel="noreferrer" 
+                          className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-all group/link"
+                        >
+                          Specs <ExternalLink size={12} className="group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </FadeInView>
@@ -483,7 +636,7 @@ function App() {
                     <img 
                       src={profileImageUrl} 
                       alt="Kgotso Phiri" 
-                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
                     />
                   </div>
                 </div>
@@ -575,6 +728,25 @@ function App() {
         </div>
       </div>
       <ChatBot />
+
+      {/* Embedded Live AI Studio App Modal */}
+      {selectedAppForEmbed && (
+        <EmbeddedAppModal
+          isOpen={!!selectedAppForEmbed}
+          onClose={() => setSelectedAppForEmbed(null)}
+          appTitle={selectedAppForEmbed.title}
+          appUrl={selectedAppForEmbed.url}
+          description={selectedAppForEmbed.description}
+          tech={selectedAppForEmbed.tech}
+        />
+      )}
+
+      {/* Add / Customise AI Studio App Modal */}
+      <AddAppModal
+        isOpen={isAddAppModalOpen}
+        onClose={() => setIsAddAppModalOpen(false)}
+        onAddProject={handleAddNewProject}
+      />
     </div>
   );
 }
