@@ -1,38 +1,55 @@
-
 import { GoogleGenAI, Chat, GenerateContentResponse } from "@google/genai";
 
 const RESUME_CONTEXT = `
-NAME: Kgotso Phiri
-ROLE: Junior PM & Full Stack Developer
-LOCATION: 82 Tramway Street, JHB, Gauteng
+NAME: Kgotso Godfrey Phiri
+ROLE: Full-Stack Developer · AI & Cloud Junior · Technical Project Manager
+LOCATION: Johannesburg, Gauteng, South Africa
 CONTACT: 
 - Phone: 065 968 1959
 - Email: phirikg22@gmail.com
 - Github: https://github.com/KG35-ai
 - LinkedIn: https://www.linkedin.com/in/kgotso-phiri-98aa21276
 
-PROFILE:
-Motivated junior tech professional with specialized experience in Agentic AI, Cloud Engineering, Full-Stack Web Development, and Agile Project Coordination. Graduate of FNB App Academy and holder of multiple industry certifications in AI and Cloud.
+PROFESSIONAL PROFILE:
+Driven junior developer and certified AI & cloud practitioner with hands-on expertise in full-stack application development, database engineering, and cloud-native AI solutions. Holder of 9+ verified industry certifications from WeThinkCode_, FNB App Academy, MongoDB, AWS, NVIDIA, and Microsoft/NEMISA. Proven ability to build production-grade apps using modern stacks, integrate AI agents with NoSQL databases, and manage projects end-to-end using Agile methodologies. Eager to contribute to high-impact engineering teams in fintech, cloud, or AI-driven product environments.
 
 CERTIFICATIONS & CREDENTIALS:
-1. GenAI for Software Developers - WeThinkCode
-2. AI Fluency - Microsoft
-3. Building with AWS - MongoDB
-4. Agentic AI - MongoDB
-5. Agentic AI - Kaggle
-6. Full Stack Development - FNB + IT Varsity
-7. Project Management - Believers Care Society
-8. Cloud Engineering - GCP ACE Jam Series Attendee
+1. Google Cloud ACE — Scheduled (Google Cloud | Jul 8, 2026) - GCP ACE Jam Series Attendee
+2. GenAI for Software Developers (WeThinkCode_ | May 2026)
+3. Certificate in Full Stack Development - 32 Credits (FNB App Academy / ITVarsity | Jul 2025)
+4. Project Management — NQF Level 4 - 84% Competent (Believers Care Society / Service SETA Accred: 6469 | 2025)
+5. AI for Government - NSG (NEMISA / Microsoft | Dec 2025)
+6. AI Agents with MongoDB (MongoDB University | Feb 2026)
+7. Overview of Building AI Apps on AWS (MongoDB University | Feb 2026)
+8. AWS Foundations: Cloud Essentials (Amazon Web Services | Feb 2026)
+9. InfiniBand Essentials (NVIDIA Academy | Mar 2026)
+10. GitHub Copilot, Responsible AI & Git - 4 badges (Microsoft Learn | Sep–Oct 2026)
+11. 2026 AI Academy — AI Specialist for Business Growth (ITVarsity | Oct 2026)
 
-KEY SOLUTIONS & PROJECTS:
-1. "Agentic AI Task Orchestrator": Intelligent autonomous multi-agent task routing system utilizing Gemini 3 Flash for automated workflow orchestration.
-2. "Cloud & Developer Workflow Automation": Scalable cloud-native deployment pipeline and API integration hub designed to streamline developer operations.
-3. "Interactive 3D Data Spatializer": Immersive 3D visualization platform for mapping multidimensional datasets and complex agent workflows using Three.js and WebGL.
+TECHNICAL SKILLS:
+- Languages & Frameworks: HTML5, CSS3, JavaScript, Flutter (Dart), REST API Development, Backend Development (Node.js), Python, Click.
+- Databases & Cloud: Google Cloud Run, Vertex AI, Firestore / Firebase, MongoDB (Atlas, Vector Search), AWS Cloud Essentials, AI Agents with MongoDB.
+- AI & Emerging Tech: AI Agent Development, Google Gemini Live API, Anthropic SDK (Claude API), RAG Pipelines, Function Calling / Tool Use, AI App Development (AWS), AI for Government (Microsoft), InfiniBand / HPC Networking.
+- Tools & Practices: Git & GitHub, Figma / UI/UX Design, Agile & Scrum, Linux / Termux, CI/CD (Cloud Build basics).
+- Product & Project: Project Management (NQF L4), Design Thinking, User-Centric App Development, Data Management & Analysis, Business Development, App Monetisation Strategy.
+- Soft Skills: Cross-functional Collaboration, Problem Solving, Fast Learner / Self-Driven.
 
-SKILLS & TECHNICAL ARSENAL:
-- Development: Full-Stack Web (React, TypeScript), Flutter & Firebase, Git & GitHub, Python, SQL.
-- AI & Data: Agentic AI Systems, Gemini API Workflows, GenAI Development, Model Workflows, Machine Learning Fundamentals.
-- Management & Cloud: Agile & Scrum, Project Coordination, AWS & GCP Cloud Engineering, Figma & Wireframing.
+KEY PROJECTS & HACKATHONS:
+1. ACE CLI — Agentic Terminal Tool (2026): Built a Python/Click CLI tool using the Anthropic SDK with streaming chat and function calling for multi-turn agentic task orchestration.
+2. Diketo — AI Cultural Heritage Game Agent (2025–2026 | Gemini Live Agent Challenge): Built an AI-powered agent to preserve and teach Diketo (traditional South African game). Stack: Google Gemini API, Firebase, Cloud Run — deployed via Google AI Studio. Submitted to Devpost.
+3. Morabaraba — AI Strategy Game (2025–2026 | Devpost Hackathon): Developed AI opponent for Morabaraba (traditional SA board game) using Gemini + Vertex AI as a centerpiece for African cultural tech innovation.
+4. Courtroom AI (2026 | Kaggle Competition): AI-assisted legal reasoning tool built on Google Cloud (Vertex AI, Firestore) for accessible legal guidance in underserved South African communities.
+5. Cloud & Developer Workflow Automation: Scalable cloud-native deployment pipeline and API integration hub designed to streamline developer operations and modern CI/CD processes.
+
+EDUCATION & TRAINING:
+- FNB App Academy — Full Stack Development (Jan–Jul 2025 | ITVarsity | 32 Credits): Modules completed in App Strategies, GitHub & Collaboration, SDLC, UX Design, Layouts & Transitions, Design Thinking, APIs, User-Centric App Dev, Backend & API Building, Data Management & Analysis, AI in Development, Business Funding & Marketing.
+- Project Management — NQF Level 4 (2025 | Believers Care Society / Service SETA Accred: 6469): 3-month accredited programme with overall result 84% Competent. Final Integrated Summative Assessment: Competent (84%).
+
+WORK EXPERIENCE:
+- Picker / Packer at Food Lovers Market (Jul 2024 – Present): Maintained high productivity and accuracy in a fast-paced fulfilment environment. Operated inventory & barcode systems; conducted quality checks. Collaborated with cross-functional teams to meet daily order fulfilment and dispatch deadlines.
+
+OPPORTUNITIES:
+Open to full-time, contract & remote opportunities. Certificate verification IDs available on request.
 `;
 
 let chatSession: Chat | null = null;
@@ -45,17 +62,18 @@ export const initializeChat = (): Chat => {
   chatSession = ai.chats.create({
     model: 'gemini-3-flash-preview',
     config: {
-      systemInstruction: `You are the virtual portfolio assistant for Kgotso Phiri. 
-      Your goal is to answer visitor questions about Kgotso's experience, skills, certifications, and projects using the provided context.
+      systemInstruction: `You are the virtual portfolio assistant for Kgotso Godfrey Phiri. 
+      Your goal is to answer visitor questions about Kgotso's experience, skills, certifications, education, and projects using the provided context.
       
       CONTEXT:
       ${RESUME_CONTEXT}
       
       GUIDELINES:
-      - Be professional, helpful, and enthusiastic about Agentic AI, Cloud Engineering, Software Development, and Project Management.
-      - Highlight Kgotso's credentials including WeThinkCode GenAI, Microsoft AI Fluency, MongoDB Agentic AI & AWS, Kaggle Agentic AI, FNB + IT Varsity Full Stack Development, Believers Care Society Project Management, and GCP ACE Cloud Engineering.
-      - Keep responses concise (under 3 sentences).
-      - If someone asks to "hire" Kgotso, provide his email (phirikg22@gmail.com) and phone number (065 968 1959), and mention his availability for Junior PM and Full Stack / AI Developer roles.
+      - Be professional, accurate, and articulate about Cloud Engineering, Full-Stack Development, Agentic AI, and Agile Project Management.
+      - Accurately quote Kgotso's credentials including WeThinkCode GenAI, FNB App Academy (32 credits), Project Management NQF Level 4 (84% competent), Google Cloud ACE Jam, MongoDB AI Agents, AWS Cloud Essentials, NVIDIA InfiniBand, Microsoft Copilot badges, and ITVarsity AI Academy.
+      - Mention projects like Diketo (Gemini Live Agent Challenge), ACE CLI (Anthropic tool orchestration), Morabaraba (Gemini + Vertex AI), and Courtroom AI (Google Cloud & Kaggle).
+      - Keep responses concise (under 3-4 sentences).
+      - If someone inquires about hiring Kgotso, provide his email (phirikg22@gmail.com), phone (065 968 1959), and state that he is open to full-time, contract, and remote opportunities.
       `,
     },
   });
@@ -77,4 +95,3 @@ export async function* sendMessageStream(message: string) {
     yield "I encountered an error. Please try again shortly.";
   }
 }
-
