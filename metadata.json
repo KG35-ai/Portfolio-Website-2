@@ -2,7 +2,8 @@
   "name": "Kgotso Phiri - 3D Portfolio",
   "description": "A high-performance 3D portfolio website featuring interactive WebGL visuals and an AI-powered personal assistant powered by Gemini 3 Flash.",
   "requestFramePermissions": [
-    "camera"
+    "camera",
+    "microphone"
   ],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"

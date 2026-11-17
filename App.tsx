@@ -36,8 +36,10 @@ import {
 } from 'lucide-react';
 import Scene from './components/Scene';
 import ChatBot from './components/ChatBot';
+import EmailAutomationHub from './components/EmailAutomationHub';
 import EmbeddedAppModal from './components/EmbeddedAppModal';
 import AddAppModal, { ProjectApp } from './components/AddAppModal';
+import { type ChatEmailDraft } from './services/geminiService';
 
 const DEFAULT_PROJECTS: ProjectApp[] = [
   {
@@ -311,6 +313,7 @@ function App() {
   } | null>(null);
 
   const [isAddAppModalOpen, setIsAddAppModalOpen] = useState(false);
+  const [incomingChatDraft, setIncomingChatDraft] = useState<ChatEmailDraft | null>(null);
 
   const handleAddNewProject = (newProj: ProjectApp) => {
     const updated = [newProj, ...projectsList];
@@ -1307,6 +1310,11 @@ function App() {
                      <span className="text-[10px] font-black uppercase tracking-widest">Resume HTML/PDF</span>
                    </button>
                  </div>
+
+                 <EmailAutomationHub
+                   incomingChatDraft={incomingChatDraft}
+                   onClearIncomingDraft={() => setIncomingChatDraft(null)}
+                 />
                </FadeInView>
             </div>
           </div>
@@ -1336,7 +1344,7 @@ function App() {
         </div>
       </div>
 
-      <ChatBot />
+      <ChatBot onApplyEmailDraft={(draft) => setIncomingChatDraft(draft)} />
 
       {/* Embedded Live AI Studio App Modal */}
       {selectedAppForEmbed && (
